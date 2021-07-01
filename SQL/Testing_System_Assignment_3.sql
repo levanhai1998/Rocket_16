@@ -31,35 +31,3 @@ SELECT FullName FROM `Account` WHERE character_length(FullName) = (SELECT MAX(ch
 SELECT * FROM `Group`;
 SELECT GroupName FROM `Group` WHERE CreateDate > '2021/05/30';
 
--- Câu 7
-SELECT * FROM `Question`;
-SELECT QuestionID FROM Answer GROUP BY QuestionID HAVING COUNT(*) = 4;
-
--- Câu 8
-SELECT ExamID FROM Exam WHERE Duration > 60 AND CreateDate > 2019/12/20;
-
--- Câu 9
-SELECT GroupName FROM `Group` ORDER BY CreateDate ASC LIMIT 5;
-
--- Câu 10
-SELECT COUNT(*) as 'Số nhân viên' FROM `Account` WHERE DepartmentID = 2;
-
--- Câu 11
-SELECT Username FROM `Account` WHERE Username like 'D';
-
--- Câu 12
-SELECT * FROM `Exam`;
-DELETE FROM `Exam` WHERE CreateDate = '2021/04/25 ';
-
--- Câu 13
-SELECT * FROM `Question`;
-DELETE FROM `Question` WHERE Content like 'câu hỏi';
-
-update accountt
-set Fullname = 'Nguyễn Bá Lộc', Email = 'loc.nguyenba@vti.com.vn'
-where AccountID = 5;
-
--- 15 -- 
-update groupaccount
-set AccountID = 5 
-where GroupID = 4

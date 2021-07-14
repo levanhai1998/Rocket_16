@@ -46,7 +46,7 @@ select  A.name
 from `subject` A
 join `student` B on A.ID = B.ID
 join `studentsubjec` C on B.id = C.StudentID
-where mark= null;
+where mark is null;
 
 --  b) Lấy danh sách các môn học có ít nhất 2 điểm
 
@@ -84,16 +84,9 @@ drop trigger if exists trigger_Subject;
  before update on `Subject`
  for each row
  begin
-      declare v_Subject INT;
-      select * into v_Subject
-      from `Subject`A 
-      join `studentsubjec` B on A.ID = B.StudentID
-      where id=Studentid
-      group by ID;
-      if(v_Subject = new.id) then
-     SIGNAL SQLSTATE '12345'
-     SET MESSAGE_TEXT = 'loi';
-     end if;
+       UPDATE `StudentSubject`
+        SET     SubjectID = NEW.id
+        WHERE   SubjectID = OLD.id;
      end$$
      delimiter ;
 UPDATE `finalexam`.`subject` SET `ID` = '5' WHERE (`ID` = '3');
@@ -108,16 +101,9 @@ drop trigger if exists trigger_StudentDeleteID;
  before delete on `Student`
  for each row
  begin
-      declare v_Student INT;
-      select * into v_Student
-      from `Student`A 
-      join `studentsubjec` B on A.ID = B.StudentID
-      where id=Studentid
-      group by ID;
-      if(v_Student is null) then
-     SIGNAL SQLSTATE '12345'
-     SET MESSAGE_TEXT = 'loi';
-     end if;
+      DELETE
+        FROM `StudentSubject`
+        WHERE StudentID = OLD.ID;
      end$$
      delimiter ;
 DELETE FROM `Student` WHERE ID =1;

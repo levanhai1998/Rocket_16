@@ -7,7 +7,7 @@ create table if not exists `Student`(
     `ID` tinyint primary key auto_increment,
     `Name` varchar(50) unique key ,
     `Age` tinyint,
-    `Gender` varchar(20)
+    `Gender` varchar(10)
 );
 
 drop table if exists `Subject`;
@@ -26,9 +26,9 @@ create table if not exists `StudentSubjec`(
 
 
 /*insert*/
-INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('1', 'Le Van Hai', '23', 'nam');
-INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('2', 'hoang manh cuong', '20', 'nam');
-INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('3', 'le thi xuan', '18', 'nu');
+INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('1', 'Le Van Hai', '23', '0');
+INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('2', 'hoang manh cuong', '20', '0');
+INSERT INTO `finalexam`.`student` (`ID`, `Name`, `Age`, `Gender`) VALUES ('3', 'le thi xuan', '18', '1');
 
 INSERT INTO `finalexam`.`studentsubjec` (`StudentID`, `SubjectID`, `Mark`, `Date`) VALUES ('1', '2', '8', '2020-02-20');
 INSERT INTO `finalexam`.`studentsubjec` (`StudentID`, `SubjectID`, `Mark`, `Date`) VALUES ('2', '5', '9', '2020-02-10');
@@ -57,15 +57,25 @@ join `studentsubjec` C on B.id = C.StudentID
 where mark >2 ;
 
 
+
 /*3. Tạo view có tên là "StudentInfo" lấy các thông tin về học sinh bao gồm:
 Student ID,Subject ID, Student Name, Student Age, Student Gender,  Subject Name, Mark, Date
 (Với cột Gender show 'Male' để thay thế cho 0, 'Female' thay thế cho 1 và 'Unknow' thay thế cho null)*/
 
-create or replace view StudentInfo as
-select *
-from `subject` A
-join `student` B on A.ID = B.ID
-where gender ='male ';
+DROP VIEW IF EXISTS StudentInfo;
+CREATE OR REPLACE VIEW StudentInfo AS
+SELECT  A.`ID` , A.`ID` , A.`name` , A.`age` , A.`Name`,A.Mark,A.`Date`,
+CASE A.gender 
+WHEN 1 THEN 'Female'
+WHEN 0 THEN 'Male'
+ELSE 'Unknow'
+END
+FROM Student A
+JOIN	StudentSubject B ON A.ID=B.StudentID
+JOIN	`Subject` C ON C.ID=B.SubjectID;
+
+SELECT * 
+FROM StudentInfo;
 
 
 
